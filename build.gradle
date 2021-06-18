@@ -1,16 +1,5 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6"
-    }
-}
-
 apply plugin: "groovy"
 apply plugin: "maven-publish"
-apply plugin: "com.jfrog.bintray"
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
@@ -35,20 +24,20 @@ publishing {
     }
 }
 
-bintray {
-    user = bintray_user
-    key = bintray_api_key
+publishing {
+    publications {
+        maven(MavenPublication) {
+            artifactId "pay2go-crypto"
+            groupId 'com.eHanlin.api'
+            from components.java
+            version "$version"
+        }
+    }
 
-    publications = ["mavenJava"]
-    publish = true
-    pkg {
-        repo = "maven"
-        name = "pay2go-crypto"
-        userOrg = "ehanlin"
-        desc = "eHanlin pay2go crypto util"
-        vcsUrl = "https://github.com/eHanlin/pay2go-crypto"
-        licenses = ["Apache-2.0"]
-        publicDownloadNumbers = true
+    repositories {
+        maven {
+            url "gcs://ehanlin-java-repo/maven2"
+        }
     }
 }
 
